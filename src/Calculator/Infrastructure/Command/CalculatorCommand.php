@@ -15,12 +15,28 @@ class CalculatorCommand extends Command
 
     private $calculatorService;
 
+    /**
+     * The constructor function is used to create a new instance of the class
+     * 
+     * @param CalculatorService calculatorService The name of the service injected.
+     */
     public function __construct(CalculatorService $calculatorService)
     {
         $this->calculatorService = $calculatorService;
         parent::__construct();
     }
 
+    /**
+     * The configure() function is used to set the description of the command and to add arguments to
+     * the command.
+     * 
+     * The description of the command is set using the setDescription() function.
+     * 
+     * The addArgument() function is used to add arguments to the command. The first argument is the
+     * name of the argument, the second argument is the mode of the argument. The mode of the argument
+     * can be InputArgument::REQUIRED or InputArgument::OPTIONAL. The third argument is the description
+     * of the argument.
+     */
     protected function configure()
     {
         $this
@@ -28,7 +44,15 @@ class CalculatorCommand extends Command
             ->addArgument('expression', InputArgument::REQUIRED, 'Enter mathematical expression');
     }
 
+
     /**
+     * It takes an input and an output, and then it tries to calculate the expression, and if it fails,
+     * it outputs an error message, and if it succeeds, it outputs the result
+     * 
+     * @param InputInterface input The input object is an instance of the class
+     * Symfony\Component\Console\Input\InputInterface, which represents the user input.
+     * @param OutputInterface output The output interface
+     * 
      * @return int added this to avoid errors and supress the deprecated use message, the return might be added as int in the future release
      */
     protected function execute(InputInterface $input, OutputInterface $output)

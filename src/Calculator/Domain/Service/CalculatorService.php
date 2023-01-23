@@ -13,11 +13,24 @@ class CalculatorService
         $this->calculator = $calculator;
     }
 
+    
+    /**
+     * It takes an expression, passes it to the calculator, and returns the result
+     * 
+     * @param expression The expression to calculate.
+     * 
+     * @return int The result of the calculation.
+     */
     public function calculate($expression)
     {
-        $this->calculator->calculate($expression);
+        return $this->calculator->calculate($expression);
     }
 
+    /**
+     * The function returns the result of the calculator
+     * 
+     * @return int The result of the calculation.
+     */
     public function getResult()
     {
         return $this->calculator->getResult();
