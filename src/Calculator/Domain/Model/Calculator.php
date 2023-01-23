@@ -17,6 +17,8 @@ class Calculator
     }
 
     private function performCalculation($expression) {
+
+        //Replace the " sqrt " with the corresponding mathematical function - stripping spaces
         if (strpos($expression, 'sqrt') !== false) {
             $expression = preg_replace('/sqrt/', 'sqrt', $expression);
         }
@@ -43,11 +45,7 @@ class Calculator
         // Replace " + " and " - " with their corresponding mathematical functions - stripping spaces
         $expression = preg_replace('/\+/', '+', $expression);
         $expression = preg_replace('/\-/', '-', $expression);
-
-        try {
-            return eval('return ' . $expression . ';');
-        } catch (Error $e) {
-            return "Invalid expression.";
-        }
+        
+        return eval('return ' . $expression . ';');
     }
 }
