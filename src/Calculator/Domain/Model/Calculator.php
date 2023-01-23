@@ -2,6 +2,8 @@
 
 namespace App\Calculator\Domain\Model;
 
+use App\Calculator\Domain\Exception\CalculatorException;
+
 class Calculator
 {
     private $result;
@@ -16,36 +18,29 @@ class Calculator
         return $this->result;
     }
 
-    private function performCalculation($expression) {
+    private function performCalculation($expression)
+    {
 
-        //Replace the " sqrt " with the corresponding mathematical function - stripping spaces
+        //Replace the " sqrt" with the corresponding mathematical function - stripping spaces
         if (strpos($expression, 'sqrt') !== false) {
             $expression = preg_replace('/sqrt/', 'sqrt', $expression);
         }
 
         // check if the expression contains invalid characters
         if (!preg_match('/^[\d\s+\-\*\/\.]+$/', $expression)) {
-            throw new \InvalidArgumentException('Invalid expression.');
+            throw new CalculatorException('The expression contains invalid characters.');
         }
 
         // check if the expression starts or ends with an operator
         if (preg_match('/^[\+\-\*\/]|[\+\-\*\/]$/', $expression)) {
-            throw new \InvalidArgumentException('Invalid expression.');
+            throw new CalculatorException('The expression starts or ends with an operator.');
         }
 
         // check if the expression contains consecutive operators
         if (preg_match('/[\+\-\*\/]{2,}/', $expression)) {
-            throw new \InvalidArgumentException('Invalid expression.');
+            throw new CalculatorException('The expression contains consecutive operators.');
         }
 
-        // Replace " * " and " / " with their corresponding mathematical functions - stripping spaces
-        $expression = preg_replace('/\*/', '*', $expression);
-        $expression = preg_replace('/\//', '/', $expression);
-
-        // Replace " + " and " - " with their corresponding mathematical functions - stripping spaces
-        $expression = preg_replace('/\+/', '+', $expression);
-        $expression = preg_replace('/\-/', '-', $expression);
-        
         return eval('return ' . $expression . ';');
     }
 }

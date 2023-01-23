@@ -3,6 +3,7 @@
 namespace App\Calculator\Infrastructure\Command;
 
 use App\Calculator\Domain\Service\CalculatorService;
+use App\Calculator\Domain\Exception\CalculatorException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,8 +25,7 @@ class CalculatorCommand extends Command
     {
         $this
             ->setDescription('Perform basic mathematical operations')
-            ->addArgument('expression', InputArgument::REQUIRED, 'Enter mathematical expression')
-        ;
+            ->addArgument('expression', InputArgument::REQUIRED, 'Enter mathematical expression');
     }
 
     /**
@@ -33,10 +33,15 @@ class CalculatorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $expression = $input->getArgument('expression');
-        $this->calculatorService->calculate($expression);
-        $result = $this->calculatorService->getResult();
-        $output->writeln("Result: " . $result);
+        try {
+            $expression = $input->getArgument('expression');
+            $this->calculatorService->calculate($expression);
+        } catch (CalculatorException $e) {
+            $output->writeln(sprintf("<error>%s</error>", $e->getMessage()));
+            return 1;
+        }
+
+        $output->writeln($this->calculatorService->getResult());
         return 0;
     }
 }
