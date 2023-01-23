@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Calclator\Model\Calculator:
+        public: true
+
+    App\Calculator\Domain\Service\CalculatorService:
+        arguments: ['@App\Calculator\Model\Calculator']
+
+    App\Calculator\Infrastructure\Repository\CalculatorRepository:
+
+    App\Calculator\Infrastructure\Command\CalculatorCommand:
+        arguments: ['@App\Calculator\Domain\Service\CalculatorService']
+        tags:
+            - { name: console.command }
